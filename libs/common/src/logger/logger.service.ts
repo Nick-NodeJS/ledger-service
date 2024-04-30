@@ -1,4 +1,9 @@
-import { Inject, Injectable, LoggerService as NestLoggerService, LogLevel } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  LoggerService as NestLoggerService,
+  LogLevel,
+} from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 import { ContextService } from '../context/context.service';
@@ -8,13 +13,17 @@ import { formatError } from '../utils/error';
 @Injectable()
 export class LoggerService implements NestLoggerService {
   constructor(
-    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: NestLoggerService,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: NestLoggerService,
     private readonly contextService: ContextService,
   ) {}
 
   verbose(message: any, context?: string | LoggingContextInterface): any {
     const contextString = this.createContextString(context);
-    return this.logger.verbose(this.getMessage(message, context), contextString);
+    return this.logger.verbose(
+      this.getMessage(message, context),
+      contextString,
+    );
   }
 
   debug(message: any, context?: string | LoggingContextInterface): any {
@@ -33,7 +42,11 @@ export class LoggerService implements NestLoggerService {
   }
 
   // TODO need deprecate trace use, and just send error in message
-  error(error: any, stack?: string, context?: string | LoggingContextInterface): any {
+  error(
+    error: any,
+    stack?: string,
+    context?: string | LoggingContextInterface,
+  ): any {
     if (stack) {
       this.warn('Please discontinue use of stack argument in logger.error', {
         module: 'LoggerService',
@@ -42,18 +55,31 @@ export class LoggerService implements NestLoggerService {
 
     const contextString = this.createContextString(context);
 
-    if ({}.hasOwnProperty.call(error, 'message') && {}.hasOwnProperty.call(error, 'stack')) {
-      return this.logger.error(this.getMessage(error.message, context), error.stack, contextString);
+    if (
+      {}.hasOwnProperty.call(error, 'message') &&
+      {}.hasOwnProperty.call(error, 'stack')
+    ) {
+      return this.logger.error(
+        this.getMessage(error.message, context),
+        error.stack,
+        contextString,
+      );
     }
 
-    return this.logger.error(this.getMessage(error, context), stack, contextString);
+    return this.logger.error(
+      this.getMessage(error, context),
+      stack,
+      contextString,
+    );
   }
 
   setLogLevels(levels: LogLevel[]) {
     this.logger.setLogLevels(levels);
   }
 
-  private createContextString(context: string | LoggingContextInterface): string {
+  private createContextString(
+    context: string | LoggingContextInterface,
+  ): string {
     if (!context) {
       return;
     }
@@ -88,7 +114,8 @@ export class LoggerService implements NestLoggerService {
     if ('object' === typeof message) {
       // is error, or has error properties
       const isError =
-        {}.hasOwnProperty.call(message, 'message') && {}.hasOwnProperty.call(message, 'stack');
+        {}.hasOwnProperty.call(message, 'message') &&
+        {}.hasOwnProperty.call(message, 'stack');
 
       // has an 'error' field that is error like
       const isNestedError =

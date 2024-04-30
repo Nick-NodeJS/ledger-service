@@ -3,6 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DatabaseConfigService } from './database-config.service';
+import {
+  CurrenciesRepository,
+  LedgersRepository,
+  TransactionsRepository,
+} from './repositories';
 
 @Global()
 @Module({
@@ -12,5 +17,12 @@ import { DatabaseConfigService } from './database-config.service';
       useClass: DatabaseConfigService,
     }),
   ],
+  exports: [
+    CurrenciesRepository,
+    LedgersRepository,
+    TransactionsRepository,
+    TypeOrmModule,
+  ],
+  providers: [CurrenciesRepository, LedgersRepository, TransactionsRepository],
 })
 export class DatabaseModule {}

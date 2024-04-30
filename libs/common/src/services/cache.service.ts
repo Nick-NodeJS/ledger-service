@@ -29,11 +29,19 @@ export class CacheService {
     return this.cache.get<T>(key);
   }
 
-  public async set<T>(key: string, value: T, options?: StoreConfig): Promise<void> {
+  public async set<T>(
+    key: string,
+    value: T,
+    options?: StoreConfig,
+  ): Promise<void> {
     return this.setValue(key, value, options);
   }
 
-  private async setValue<T>(key: string, value: T, options?: StoreConfig): Promise<void> {
+  private async setValue<T>(
+    key: string,
+    value: T,
+    options?: StoreConfig,
+  ): Promise<void> {
     if (options?.ttl) {
       return this.cache.set(key, value, options.ttl);
     }

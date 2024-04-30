@@ -1,5 +1,5 @@
 import type { RedisClientOptions } from 'redis';
-import {redisStore} from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-redis-store';
 
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -23,7 +23,7 @@ export type CommonModuleOptions = {
 
 @Global()
 @Module({
-  imports: []
+  imports: [],
 })
 export class CommonModule {
   static register(options: CommonModuleOptions): DynamicModule {

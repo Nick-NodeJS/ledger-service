@@ -2,7 +2,10 @@ import { ConfigService } from '@nestjs/config';
 
 import { winstonParams } from './winston';
 
-export const getWinstonParams = (identifier: string, configService: ConfigService) =>
+export const getWinstonParams = (
+  identifier: string,
+  configService: ConfigService,
+) =>
   winstonParams({
     logErrorFile: configService.get<string>('LOG_ERROR_FILE'),
     logCombineLog: configService.get<string>('LOG_COMBINED_FILE'),

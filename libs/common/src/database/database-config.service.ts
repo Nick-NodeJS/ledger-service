@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { LOGGER_SERVICE, LoggerService } from '../logger';
 
-
 @Injectable()
 export class DatabaseConfigService implements TypeOrmOptionsFactory {
   constructor(
@@ -14,7 +13,9 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
   ) {}
 
   public createTypeOrmOptions(): TypeOrmModuleOptions {
-    this.logger.log(`Database user used: ${this.configService.get<string>('database.username')}`);
+    this.logger.log(
+      `Database user used: ${this.configService.get<string>('database.username')}`,
+    );
     // USE IT TO GENERATE MIGRATIONS
     // return { ...this.configService.get('database') };
     return {

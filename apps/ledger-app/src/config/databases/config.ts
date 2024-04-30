@@ -3,7 +3,6 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 export const config = registerAs('database', () => ({
   autoLoadEntities: true,
-  type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: process.env.POSTGRES_PORT,
   database: process.env.POSTGRES_DATABASE,
@@ -12,8 +11,6 @@ export const config = registerAs('database', () => ({
   synchronize: JSON.parse(process.env.POSTGRES_SYNC),
   schema: process.env.POSTGRES_SCHEMA,
   logging: JSON.parse(process.env.POSTGRES_LOGGING),
-  entities: [`${__dirname}/../../../../../../**/*.entity{.ts,.js}`],
-  migrations: [`${__dirname}/../../../../../common/database/migrations/*{.ts,.js}`],
   namingStrategy: new SnakeNamingStrategy(),
   applicationName: 'ledger-service',
 }));

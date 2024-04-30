@@ -5,13 +5,16 @@ import { LedgerEntity } from './ledger';
 @Entity({ name: 'transactions' })
 export class TransactionEntity extends BaseEntity {
   @Column({ type: Number, nullable: false })
-  public amount: number;
+  amount: number;
+
+  @Column({ type: String, nullable: true })
+  description: string;
 
   @JoinColumn({ name: 'recipient_ledger_id', referencedColumnName: 'id' })
-  @ManyToOne(() => LedgerEntity, { nullable: false })
-  recipient: LedgerEntity;
+  @ManyToOne(() => LedgerEntity, { nullable: true })
+  recipient: LedgerEntity | null;
 
   @JoinColumn({ name: 'sender_ledger_id', referencedColumnName: 'id' })
-  @ManyToOne(() => LedgerEntity, { nullable: false })
-  sender: LedgerEntity;
+  @ManyToOne(() => LedgerEntity, { nullable: true })
+  sender: LedgerEntity | null;
 }

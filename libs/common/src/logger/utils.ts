@@ -10,7 +10,9 @@ export interface UnknownContextInterface extends MinimalContextInterface {
 }
 
 // Add Service ContextInterfaces Here
-export type LoggingContextInterface = UnknownContextInterface | MinimalContextInterface;
+export type LoggingContextInterface =
+  | UnknownContextInterface
+  | MinimalContextInterface;
 
 export function createLoggingContext(context: { [key: string]: any }) {
   return `${Object.entries(context)

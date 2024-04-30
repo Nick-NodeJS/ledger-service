@@ -2,7 +2,13 @@ import { Request, Response } from 'express';
 import { Observable, tap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  Inject,
+} from '@nestjs/common';
 
 import {
   HEADER_REQUEST_ID,
@@ -72,10 +78,17 @@ export class HeadersInterceptor implements NestInterceptor {
     response.header(HEADER_REQUEST_ID, request[HEADER_REQUEST_ID]);
     response.header(HEADER_TIMESTAMP_ENTRY, String(entryTimestamp));
     response.header(HEADER_TIMESTAMP_EXIT, String(exitTimestamp));
-    response.header(HEADER_TIME_EXECUTE, String(exitTimestamp - entryTimestamp));
+    response.header(
+      HEADER_TIME_EXECUTE,
+      String(exitTimestamp - entryTimestamp),
+    );
   }
 
-  getLogData(request: Request, entryTimestamp: number, err?: Error): ReqLogData {
+  getLogData(
+    request: Request,
+    entryTimestamp: number,
+    err?: Error,
+  ): ReqLogData {
     const data: ReqLogData = {
       message: err != null ? 'Request failed' : 'Request completed',
       url: request.originalUrl,

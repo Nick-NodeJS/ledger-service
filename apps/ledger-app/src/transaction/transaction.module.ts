@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { TransactionController } from './transaction.controller';
-import { LedgersRepository, TransactionsRepository } from '@app/common/database/repositories';
+import {
+  LedgersRepository,
+  TransactionsRepository,
+} from '@app/common/database/repositories';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LedgerEntity, TransactionEntity } from '@app/common/database/entities';
 

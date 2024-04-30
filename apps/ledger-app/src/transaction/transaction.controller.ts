@@ -6,7 +6,6 @@ import {
   Param,
   HttpStatus,
   Query,
-  Patch,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';

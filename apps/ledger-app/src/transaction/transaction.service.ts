@@ -19,7 +19,7 @@ export class TransactionService {
   ) {}
 
   async create(transactionsToProcess: TransactionCreateDto[]) {
-    let results = [];
+    const results = [];
 
     const chunkSize = this.config.get<number>('app.txInserChunk');
     const totalTransactions = transactionsToProcess.length;
@@ -28,7 +28,7 @@ export class TransactionService {
     for (let k = 0; k < totalTransactions; k += chunkSize) {
       const limit =
         k + chunkSize < totalTransactions ? k + chunkSize : totalTransactions;
-      let promises = [];
+      const promises = [];
       for (let i = 0 + k; i < limit; i++) {
         promises.push(
           this.transactionsRepository.processTransaction(

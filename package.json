@@ -15,7 +15,6 @@
     "test": "npm run job-consumer-test & npm run ledger-test",
     "test:e2e": "npm run job-consumer-test:e2e & npm run ledger-test:e2e",
     "libs-test": "jest --testPathPattern=\"./libs/.*spec.ts\"",
-
     "job-consumer-build": "nest build job-consumer-app",
     "job-consumer-format": "prettier --write \"apps/job-consumer-app/**/*.ts\" \"libs/**/*.ts\"",
     "job-consumer-start": "nest start job-consumer-app",
@@ -25,7 +24,6 @@
     "job-consumer-lint": "eslint \"./apps/job-consumer-app/{src,test}/**/*.ts\" --fix",
     "job-consumer-test": "jest \"./apps/job-consumer-app/src/.*spec.ts\"",
     "job-consumer-test:e2e": "jest --config ./apps/job-consumer-app/test/jest-e2e.json",
-
     "ledger-build": "nest build ledger-app",
     "ledger-format": "prettier --write \"apps/ledger-app/**/*.ts\" \"libs/**/*.ts\"",
     "ledger-start": "nest start ledger-app",
@@ -34,14 +32,38 @@
     "ledger-start:prod": "nest start ledger-app",
     "ledger-lint": "eslint \"./apps/ledger-app/{src,test}/**/*.ts\" --fix",
     "ledger-test": "jest --testPathPattern=\"./apps/ledger-app/src/.*spec.ts\"",
-    "ledger-test:e2e": "jest --config ./apps/ledger-app/test/jest-e2e.json"
+    "ledger-test:e2e": "jest --config ./apps/ledger-app/test/jest-e2e.json",
+    "typeorm": "ts-node --require tsconfig-paths/register ./node_modules/typeorm/cli",
+    "migration:run": "npm run typeorm migration:run -- -d ./apps/common/database/ormconfig.ts",
+    "migration:generate": "npm run typeorm -- -d ./apps/common/database/ormconfig.ts migration:generate",
+    "migration:create": "npm run typeorm -- migration:create",
+    "migration:revert": "npm run typeorm -- -d ./apps/common/database/ormconfig.ts migration:revert",
+    "migration:show": "npm run typeorm -- migration:show -d ./apps/common/database/ormconfig.ts"
   },
   "dependencies": {
+    "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.3.1",
+    "@nestjs/typeorm": "^10.0.2",
+    "cache-manager": "^5.5.1",
+    "cache-manager-redis-store": "^3.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "ioredis": "^5.4.1",
+    "joi": "^17.13.0",
+    "nest-winston": "^1.9.4",
+    "nestjs-request-context": "^3.0.0",
+    "pg": "^8.11.5",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.16",
+    "typeorm-naming-strategies": "^4.1.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.13.0",
+    "winston-transport": "^4.7.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -51,6 +73,7 @@
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
     "@types/supertest": "^2.0.12",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.42.0",
@@ -62,9 +85,9 @@
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.0.0",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.0.0"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -401,3 +401,4 @@ FodyWeavers.xsd
 # App
 .env
 dist
+postgres-data

@@ -6,7 +6,7 @@ export class LedgerAppController {
   constructor(private readonly ledgerAppService: LedgerAppService) {}
 
   @Get()
-  getHello(): string {
+  async getHello(): Promise<string> {
     return this.ledgerAppService.getHello();
   }
 }

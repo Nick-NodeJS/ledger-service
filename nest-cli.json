@@ -37,13 +37,13 @@
         "tsConfigPath": "apps/job-consumer-app/tsconfig.app.json"
       }
     },
-    "common-lib": {
+    "common": {
       "type": "library",
-      "root": "libs/common-lib",
+      "root": "libs/common",
       "entryFile": "index",
-      "sourceRoot": "libs/common-lib/src",
+      "sourceRoot": "libs/common/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/common-lib/tsconfig.lib.json"
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     }
   }

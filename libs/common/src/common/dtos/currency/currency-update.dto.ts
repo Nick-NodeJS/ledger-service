@@ -1,24 +1,44 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class CurrencyUpdateDTO {
+export class CurrencyUpdateDto {
   @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ type: String, example: 'EUR', description: 'Currency code' })
-  public code: string;
+  @IsOptional()
+  @ApiProperty({
+    type: String,
+    example: 'EUR',
+    description: 'Currency code',
+    required: false,
+  })
+  public code?: string;
 
   @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty({ type: Number, example: 2, description: 'Currency decimal' })
-  public decimals: number;
+  @IsOptional()
+  @ApiProperty({
+    type: Number,
+    example: 2,
+    description: 'Currency decimal',
+    required: false,
+  })
+  public decimals?: number;
 
   @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ type: String, example: 'Euro', description: 'Currency name' })
-  public name: string;
+  @IsOptional()
+  @ApiProperty({
+    type: String,
+    example: 'Euro',
+    description: 'Currency name',
+    required: false,
+  })
+  public name?: string;
 
   @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ type: String, example: '€', description: 'Currency symbol' })
-  public symbol: string;
+  @IsOptional()
+  @ApiProperty({
+    type: String,
+    example: '€',
+    description: 'Currency symbol',
+    required: false,
+  })
+  public symbol?: string;
 }

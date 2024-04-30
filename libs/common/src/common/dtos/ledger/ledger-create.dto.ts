@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class LegerCreateDTO {
+export class LedgerCreateDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty({ type: Number, example: 1000, description: 'Ledger balance' })

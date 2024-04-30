@@ -9,6 +9,9 @@ import { CurrencyEntity } from '@app/common/database/entities/currency';
 import { LedgerEntity } from '@app/common/database/entities/ledger';
 import { TransactionEntity } from '@app/common/database/entities/transaction';
 import { CacheService } from '@app/common/services';
+import { CurrencyController } from '../currency/currency.controller';
+import { CurrencyService } from '../currency/currency.service';
+import { CurrencyModule } from '../currency/currency.module';
 
 @Module({
   imports: [
@@ -16,10 +19,11 @@ import { CacheService } from '@app/common/services';
       serviceIdentifier: 'ledger-service',
       config: configuration(config),
     }),
-    TypeOrmModule.forFeature([CurrencyEntity, LedgerEntity, TransactionEntity]),
+    CurrencyModule,
+    TypeOrmModule.forFeature([LedgerEntity, TransactionEntity]),
   ],
   controllers: [LedgerAppController],
-  providers: [LedgerAppService, CacheService],
+  providers: [CurrencyService, LedgerAppService, CacheService],
 })
 export class LedgerAppModule {
   constructor(@Inject(LOGGER_SERVICE) private readonly logger: LoggerService) {}

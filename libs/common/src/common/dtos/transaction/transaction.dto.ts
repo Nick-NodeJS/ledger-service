@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
-import { TransactionCreateDTO } from './transaction-create.dto';
+import { IsDateString, IsNotEmpty, IsNumber } from 'class-validator';
+import { TransactionCreateDto } from './transaction-create.dto';
 
-export class TransactionDTO extends TransactionCreateDTO {
+export class TransactionDto extends TransactionCreateDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty({
@@ -11,4 +11,22 @@ export class TransactionDTO extends TransactionCreateDTO {
     description: 'Transaction id',
   })
   id: number;
+
+  @IsDateString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: Number,
+    example: '2024-04-30T09:35:44.346Z',
+    description: 'Created date',
+  })
+  createdAt: Date;
+
+  @IsDateString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: Number,
+    example: '2024-04-30T09:35:44.346Z',
+    description: 'Updated date',
+  })
+  updatedAt: Date;
 }

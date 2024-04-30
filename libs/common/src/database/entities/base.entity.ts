@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
@@ -9,14 +8,12 @@ export class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Exclude({ toPlainOnly: true })
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Exclude({ toPlainOnly: true })
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

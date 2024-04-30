@@ -2,7 +2,7 @@ import { BaseEntity } from './base.entity';
 import { Column, Entity, Unique } from 'typeorm';
 
 @Unique(['code'])
-@Entity({ name: 'carrencies' })
+@Entity({ name: 'currencies' })
 export class CurrencyEntity extends BaseEntity {
   @Column({ type: String, nullable: false })
   code: string;

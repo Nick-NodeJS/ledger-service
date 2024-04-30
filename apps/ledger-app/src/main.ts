@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { LedgerAppModule } from './ledger-app.module';
+import { LedgerAppModule } from './ledger/ledger-app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { setupApp } from '@app/common/app';
 

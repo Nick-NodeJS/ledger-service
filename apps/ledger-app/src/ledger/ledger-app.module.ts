@@ -3,7 +3,7 @@ import { LedgerAppController } from './ledger-app.controller';
 import { LedgerAppService } from './ledger-app.service';
 import { CommonModule, LOGGER_SERVICE, LoggerService } from '@app/common';
 import configuration from '@app/common/config/configuration';
-import config from './config';
+import config from '../config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CurrencyEntity } from '@app/common/database/entities/currency';
 import { LedgerEntity } from '@app/common/database/entities/ledger';

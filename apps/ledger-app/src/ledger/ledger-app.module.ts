@@ -5,13 +5,12 @@ import { CommonModule, LOGGER_SERVICE, LoggerService } from '@app/common';
 import configuration from '@app/common/config/configuration';
 import config from '../config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CurrencyEntity } from '@app/common/database/entities/currency';
 import { LedgerEntity } from '@app/common/database/entities/ledger';
 import { TransactionEntity } from '@app/common/database/entities/transaction';
 import { CacheService } from '@app/common/services';
-import { CurrencyController } from '../currency/currency.controller';
 import { CurrencyService } from '../currency/currency.service';
 import { CurrencyModule } from '../currency/currency.module';
+import { TransactionModule } from '../transaction/transaction.module';
 
 @Module({
   imports: [
@@ -20,6 +19,7 @@ import { CurrencyModule } from '../currency/currency.module';
       config: configuration(config),
     }),
     CurrencyModule,
+    TransactionModule,
     TypeOrmModule.forFeature([LedgerEntity, TransactionEntity]),
   ],
   controllers: [LedgerAppController],

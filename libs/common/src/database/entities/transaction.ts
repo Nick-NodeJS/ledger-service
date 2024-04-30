@@ -11,10 +11,10 @@ export class TransactionEntity extends BaseEntity {
   description: string;
 
   @JoinColumn({ name: 'recipient_ledger_id', referencedColumnName: 'id' })
-  @ManyToOne(() => LedgerEntity, { nullable: false })
-  recipient: LedgerEntity;
+  @ManyToOne(() => LedgerEntity, { nullable: true })
+  recipient: LedgerEntity | null;
 
   @JoinColumn({ name: 'sender_ledger_id', referencedColumnName: 'id' })
-  @ManyToOne(() => LedgerEntity, { nullable: false })
-  sender: LedgerEntity;
+  @ManyToOne(() => LedgerEntity, { nullable: true })
+  sender: LedgerEntity | null;
 }

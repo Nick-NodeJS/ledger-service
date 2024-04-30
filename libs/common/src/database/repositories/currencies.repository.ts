@@ -14,7 +14,7 @@ export class CurrenciesRepository extends Repository<CurrencyEntity> {
   }
 
   async insertOne(currencyData: CurrencyCreateDto) {
-    const { id } = (await this.insert(currencyData))?.identifiers.pop();
+    const { id } = (await this.insert(currencyData)).identifiers.pop();
     return this.findOneBy({ id });
   }
 

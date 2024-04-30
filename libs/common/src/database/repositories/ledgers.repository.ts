@@ -17,7 +17,7 @@ export class LedgersRepository extends Repository<LedgerEntity> {
     });
     const { id } = (
       await this.insert({ balance: ledgerData.balance, currency })
-    )?.identifiers.pop();
+    ).identifiers.pop();
     return this.findOneBy({ id });
   }
 }

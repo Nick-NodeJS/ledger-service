@@ -5,7 +5,7 @@ export class LedgerCreateDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty({ type: Number, example: 1000, description: 'Ledger balance' })
-  public balance: number;
+  balance: number;
 
   @IsString()
   @IsNotEmpty()

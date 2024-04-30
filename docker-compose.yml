@@ -1,9 +1,5 @@
 version: "3.4"
 
-# networks:
-#   docker-network:
-#     driver: bridge
-
 services:
   redis:
     image: redis:latest
@@ -11,8 +7,6 @@ services:
     ports:
       - "6379:6379"
     command: ["redis-server", "--bind", "redis", "--port", "6379"]
-    # networks:
-    # - docker-network
   db:
     container_name: ledger-postgres
     image: postgres
@@ -25,8 +19,6 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-    # networks:
-    #   - docker-network
 
   # job-consumer:
   #   build:
@@ -37,8 +29,6 @@ services:
   #     - .env
   #   ports:
   #     - "3001:3001"
-      # networks:
-      # - docker-network
     # depends_on:
     #   - redis
     #   - db
@@ -51,11 +41,7 @@ services:
   #     - .env
   #   ports:
   #     - "3000:3000"
-  #   # networks:
-  #   #   - docker-network
   #   depends_on:
   #     - redis
   #     - db
-    # environment:
-    #   - REDIS_HOST=ledger-redis
       # - job-consumer

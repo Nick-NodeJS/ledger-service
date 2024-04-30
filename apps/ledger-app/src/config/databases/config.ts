@@ -13,7 +13,9 @@ export const config = registerAs('database', () => ({
   schema: process.env.POSTGRES_SCHEMA,
   logging: JSON.parse(process.env.POSTGRES_LOGGING),
   entities: [`${__dirname}/../../../../../../**/*.entity{.ts,.js}`],
-  migrations: [`${__dirname}/../../../../../common/database/migrations/*{.ts,.js}`],
+  migrations: [
+    `${__dirname}/../../../../../common/database/migrations/*{.ts,.js}`,
+  ],
   namingStrategy: new SnakeNamingStrategy(),
   applicationName: 'ledger-service',
 }));

@@ -9,13 +9,19 @@ import { LOGGER_SERVICE } from '../logger';
 import { ConfigService } from '@nestjs/config';
 import { json, urlencoded } from 'express';
 
-export async function setupApp(app: NestExpressApplication): Promise<NestExpressApplication> {
+export async function setupApp(
+  app: NestExpressApplication,
+): Promise<NestExpressApplication> {
   const logger = app.get(LOGGER_SERVICE);
 
   app.useLogger(logger);
   app.useGlobalInterceptors(new HeadersInterceptor(logger));
   app.setGlobalPrefix('api');
-  app.enableVersioning({ type: VersioningType.URI, prefix: 'v', defaultVersion: '1' });
+  app.enableVersioning({
+    type: VersioningType.URI,
+    prefix: 'v',
+    defaultVersion: '1',
+  });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const { NODE_ENV, SERVICE_NAME, SERVICE_PORT } = process.env;
@@ -34,7 +40,12 @@ export async function setupApp(app: NestExpressApplication): Promise<NestExpress
 
   const configService = app.get<ConfigService>(ConfigService);
   app.use(json({ limit: configService.get<string>('app.bodyLimit') }));
-  app.use(urlencoded({ extended: true, limit: configService.get<string>('app.urlLimit') }));
+  app.use(
+    urlencoded({
+      extended: true,
+      limit: configService.get<string>('app.urlLimit'),
+    }),
+  );
 
   await app.listen(SERVICE_PORT || 3000);
 

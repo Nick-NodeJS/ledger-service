@@ -33,22 +33,32 @@ export type LogConfig = {
   defaultMeta?: Record<string, any>;
 };
 
-const createBaseTransports = (logErrorFile?: string, logCombineLog?: string): Transport[] => {
+const createBaseTransports = (
+  logErrorFile?: string,
+  logCombineLog?: string,
+): Transport[] => {
   const transports: Transport[] = [
     //Array<FileTransportInstance | ConsoleTransportInstance>
     new winston.transports.Console({
       format:
-        Boolean(process.env.LOG_IN_JSON) && process.env.LOG_IN_JSON.toLowerCase() === 'true'
+        Boolean(process.env.LOG_IN_JSON) &&
+        process.env.LOG_IN_JSON.toLowerCase() === 'true'
           ? winston.format.json()
           : // NestJS console like logs
-            winston.format.combine(winston.format.timestamp(), utilities.format.nestLike()),
+            winston.format.combine(
+              winston.format.timestamp(),
+              utilities.format.nestLike(),
+            ),
     }),
   ];
   // - Write all logs with level `error` and below to `error.log`
   logErrorFile &&
-    transports.push(new winston.transports.File({ level: 'error', filename: logErrorFile }));
+    transports.push(
+      new winston.transports.File({ level: 'error', filename: logErrorFile }),
+    );
   // - Write all logs with level `info` and below to `combined.log`
-  logCombineLog && transports.push(new winston.transports.File({ filename: logCombineLog }));
+  logCombineLog &&
+    transports.push(new winston.transports.File({ filename: logCombineLog }));
 
   return transports;
 };
@@ -60,7 +70,10 @@ export const winstonParams = ({
   level = 'info',
   defaultMeta,
 }: LogConfig): WinstonModuleOptions => {
-  const transports: Transport[] = createBaseTransports(logErrorFile, logCombineLog);
+  const transports: Transport[] = createBaseTransports(
+    logErrorFile,
+    logCombineLog,
+  );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const infoFormat = winston.format(<T>(info, _opts) => {

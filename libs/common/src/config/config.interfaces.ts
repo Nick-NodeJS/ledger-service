@@ -1,6 +1,9 @@
-declare type ConfigFactoryReturnValue = Record<string, any> | Promise<Record<string, any>>;
-export declare type ConfigFactory<T extends ConfigFactoryReturnValue = ConfigFactoryReturnValue> =
-  () => T;
+declare type ConfigFactoryReturnValue =
+  | Record<string, any>
+  | Promise<Record<string, any>>;
+export declare type ConfigFactory<
+  T extends ConfigFactoryReturnValue = ConfigFactoryReturnValue,
+> = () => T;
 
 export interface ConfigModuleOptions {
   cache?: boolean;

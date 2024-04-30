@@ -3,9 +3,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class LedgerAppService {
-  constructor(
-    private readonly cache: CacheService,
-  ) {}
+  constructor(private readonly cache: CacheService) {}
   async getHello() {
     const data = { key1: 'key1' };
     await this.cache.set<typeof data>('data', data);

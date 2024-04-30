@@ -16,19 +16,13 @@ import { CacheService } from '@app/common/services';
       serviceIdentifier: 'ledger-service',
       config: configuration(config),
     }),
-    TypeOrmModule.forFeature([
-      CurrencyEntity,
-      LedgerEntity,
-      TransactionEntity,
-    ]),
+    TypeOrmModule.forFeature([CurrencyEntity, LedgerEntity, TransactionEntity]),
   ],
   controllers: [LedgerAppController],
   providers: [LedgerAppService, CacheService],
 })
 export class LedgerAppModule {
-  constructor(
-    @Inject(LOGGER_SERVICE) private readonly logger: LoggerService,
-  ) {}
+  constructor(@Inject(LOGGER_SERVICE) private readonly logger: LoggerService) {}
 
   onModuleInit(): void {
     const { ENV, SERVICE_NAME, SERVICE_PORT, SERVICE_HOST } = process.env;

@@ -13,7 +13,7 @@ export class LedgersCachedRepository {
     private readonly config: ConfigService,
     private readonly cache: CacheService,
     @Inject(LOGGER_SERVICE) private readonly logger: LoggerService,
-    @InjectRepository(LedgersRepository) private readonly ledgersRepository: LedgersRepository,
+    @InjectRepository(LedgersRepository)
+    private readonly ledgersRepository: LedgersRepository,
   ) {}
-
 }

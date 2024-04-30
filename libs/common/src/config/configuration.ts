@@ -14,7 +14,8 @@ const envFiles = [
   '.env',
 ];
 
-const envFilePath = (folder: string, file: string): string => join(folder, file);
+const envFilePath = (folder: string, file: string): string =>
+  join(folder, file);
 
 let dotEnvInitiated = false;
 
@@ -53,16 +54,23 @@ export const configuration = ({
   validationOptions: validationOptions,
   validate: (record): ConfigModuleOptions['validate'] => {
     // console.log(`\nenvFileDir: ${envFileDir}\n`);
-    const { error, value: validatedConfig } = validationSchema.validate(record, {
-      allowUnknown: true,
-      ...validationOptions,
-    });
+    const { error, value: validatedConfig } = validationSchema.validate(
+      record,
+      {
+        allowUnknown: true,
+        ...validationOptions,
+      },
+    );
     if (error) {
       // NOTE: Environment variables validation failed, service will crash
       // We try to log as much information as possible
       try {
         const logger = createLogger(envFileDir);
-        logger.error(`Config validation error: ${error.message}`, null, 'Config validation');
+        logger.error(
+          `Config validation error: ${error.message}`,
+          null,
+          'Config validation',
+        );
       } catch (loggerError) {
         console.error('Config validation error:', error); // eslint-disable-line no-console
       }

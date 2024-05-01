@@ -6,7 +6,7 @@ RUN npm install
 
 # Build application
 COPY . .
-RUN npm run job-consumer-build
+RUN npm run ledger-build
 
 FROM node:18.16
 # Copy runtime dependencies and application code

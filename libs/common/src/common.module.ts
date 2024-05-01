@@ -1,4 +1,3 @@
-import type { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-store';
 
 import { DynamicModule, Global, Module } from '@nestjs/common';
@@ -13,7 +12,6 @@ export { LOGGER_SERVICE } from './logger/logger.module';
 export { LoggerService } from './logger/logger.service';
 import { DatabaseModule } from './database/database.module';
 import { CacheModule, CacheStore } from '@nestjs/cache-manager';
-import { CacheService } from './services';
 export * from './common.module';
 
 export type CommonModuleOptions = {
@@ -42,18 +40,19 @@ export class CommonModule {
           isGlobal: true,
           imports: [ConfigModule],
           useFactory: async (config: ConfigService) => {
+            const { host, port, ttl, db } = config.get<any>('cache');
             const store = await redisStore({
               socket: {
-                host: config.get('cache.host'),
-                port: config.get('cache.port'),
+                host,
+                port,
               },
             });
             return {
               store: {
                 create: () => store as unknown as CacheStore,
               },
-              ttl: config.get('cache.ttl'),
-              db: config.get('cache.db'),
+              ttl,
+              db,
             };
           },
           inject: [ConfigService],

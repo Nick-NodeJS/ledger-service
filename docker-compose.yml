@@ -6,7 +6,6 @@ services:
     container_name: ledger-redis
     ports:
       - "6379:6379"
-    # command: ["redis-server", "--bind", "redis", "--port", "6379"]
   db:
     container_name: ledger-postgres
     image: postgres
@@ -32,16 +31,20 @@ services:
     # depends_on:
     #   - redis
     #   - db
-  # ledger:
-  #   build:
-  #     context: .
-  #     dockerfile: ledger.Dockerfile
-  #   container_name: ledger-app
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - redis
-  #     - db
+  ledger:
+    build:
+      context: .
+      dockerfile: ledger.Dockerfile
+    container_name: ledger-app
+    restart: always
+    environment:
+      - POSTGRES_HOST=ledger-postgres
+      - REDIS_HOST=ledger-redis
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - db
       # - job-consumer

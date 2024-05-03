@@ -7,6 +7,8 @@ import {
 } from '@app/common/database/repositories';
 import { ConfigService } from '@nestjs/config';
 import { LOGGER_SERVICE, LoggerService } from '@app/common';
+import { retryAsyncOperation } from '@app/common/utils/retry-async-operation';
+import { TransactionEntity } from '@app/common/database/entities';
 
 @Injectable()
 export class TransactionService {
@@ -31,9 +33,15 @@ export class TransactionService {
       const promises = [];
       for (let i = 0 + k; i < limit; i++) {
         promises.push(
-          this.transactionsRepository.processTransaction(
-            transactionsToProcess[i],
-          ),
+          retryAsyncOperation<TransactionEntity>({
+            operation: this.transactionsRepository.processTransaction.bind(
+              this.transactionsRepository,
+            ),
+            args: [transactionsToProcess[i]],
+            delay: this.config.get<number>('app.asyncOperationDelay'),
+            maxRetries: this.config.get<number>('app.maxAsyncOperationRetries'),
+            logger: this.logger,
+          }),
         );
       }
       const result = await Promise.all(promises);

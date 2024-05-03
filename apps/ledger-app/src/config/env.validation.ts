@@ -9,6 +9,8 @@ export const appValidationSchema = {
   BODY_LIMIT: Joi.string().default('1mB'),
   URL_LIMIT: Joi.string().default('300kB'),
   TX_INSERT_CHUNK: Joi.number().default(20),
+  MAX_ASYNC_OPERATION_RETRIES: Joi.number().default(3),
+  ASYNC_OPERATION_DELAY: Joi.number().default(10),
 };
 
 export const validationSchema = Joi.object({

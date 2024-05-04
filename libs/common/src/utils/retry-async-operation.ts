@@ -1,20 +1,12 @@
-import { LoggerService } from '@nestjs/common';
+import { AnyLogger, retryAsyncOperationArgs } from '../common/types';
 
-export type retryAsyncOperationArgs<T> = {
-  operation: (...args: any[]) => Promise<T>;
-  args: any[];
-  maxRetries: number;
-  delay: number;
-  logger: LoggerService;
-};
-
-export async function retryAsyncOperation<T>({
+export async function retryAsyncOperation<T, L extends AnyLogger>({
   operation,
   delay,
   maxRetries,
   logger,
   args,
-}): Promise<T> {
+}: retryAsyncOperationArgs<T, L>): Promise<T> {
   let retries = 1;
 
   while (retries <= maxRetries) {
@@ -24,7 +16,7 @@ export async function retryAsyncOperation<T>({
       return result; // If successful, return the result
     } catch (error) {
       // If an error occurs, log it
-      logger.error(`Attempt ${retries} failed: ${error.message}`);
+      logger.warn(`Attempt ${retries} failed: ${error.message}`);
 
       // If there are remaining retries, wait for the specified delay before retrying
       if (retries < maxRetries) {

@@ -33,7 +33,7 @@ export class TransactionService {
       const promises = [];
       for (let i = 0 + k; i < limit; i++) {
         promises.push(
-          retryAsyncOperation<TransactionEntity>({
+          retryAsyncOperation<TransactionEntity, LoggerService>({
             operation: this.transactionsRepository.processTransaction.bind(
               this.transactionsRepository,
             ),

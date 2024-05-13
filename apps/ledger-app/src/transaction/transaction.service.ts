@@ -1,5 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { FindManyDto, TransactionCreateDto } from '@app/common/common/dtos';
+import {
+  DebitCreditTransactions,
+  FindManyDto,
+  TransactionCreateDto,
+  TransactionDto,
+} from '@app/common/common/dtos';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   LedgersRepository,
@@ -9,6 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { LOGGER_SERVICE, LoggerService } from '@app/common';
 import { retryAsyncOperation } from '@app/common/utils/retry-async-operation';
 import { TransactionEntity } from '@app/common/database/entities';
+import { WithCount } from '@app/common/common/types/records-with-count.type';
 
 @Injectable()
 export class TransactionService {
@@ -54,8 +60,12 @@ export class TransactionService {
     return results;
   }
 
-  findAll(query: FindManyDto) {
-    return this.transactionsRepository.find(query);
+  async findAll(query: FindManyDto): Promise<WithCount<TransactionDto>> {
+    const { records, count } = await this.transactionsRepository.findAll(query);
+    return {
+      records: records.map(this.mapEntityToDto),
+      count,
+    };
   }
 
   findOne(id: number) {
@@ -90,5 +100,46 @@ export class TransactionService {
     }
 
     return transactions;
+  }
+
+  async findByLedgerId(
+    ledgerId: number,
+    query: FindManyDto,
+  ): Promise<DebitCreditTransactions> {
+    const [debitTransactionEntities, creditTransactionEntities] =
+      await Promise.all([
+        this.transactionsRepository.findAllByLedgerId(ledgerId, query),
+        this.transactionsRepository.findAllByLedgerId(ledgerId, query, false),
+      ]);
+    return {
+      debitTransactions: {
+        records: debitTransactionEntities.records.map(this.mapEntityToDto),
+        count: debitTransactionEntities.count,
+      },
+      creditTransactions: {
+        records: creditTransactionEntities.records.map(this.mapEntityToDto),
+        count: creditTransactionEntities.count,
+      },
+    };
+  }
+
+  private mapEntityToDto({
+    sender,
+    recipient,
+    id,
+    createdAt,
+    updatedAt,
+    amount,
+    description,
+  }): TransactionDto {
+    return {
+      sender: sender.id,
+      recipient: recipient.id,
+      id,
+      createdAt,
+      updatedAt,
+      amount,
+      description,
+    };
   }
 }

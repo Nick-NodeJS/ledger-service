@@ -1,7 +1,7 @@
-import { DataSource, In, Repository } from 'typeorm';
+import { Between, DataSource, In, Repository } from 'typeorm';
 import { LedgerEntity, TransactionEntity } from '../entities';
 import { Injectable } from '@nestjs/common';
-import { TransactionCreateDto, TransactionDto } from '@app/common/common/dtos';
+import { FindManyDto, TransactionCreateDto } from '@app/common/common/dtos';
 import { checkBalance } from '@app/common/utils';
 import { BadTransactionReason } from '@app/common/enums';
 import { TransactionValidation } from '@app/common/common/types';
@@ -76,5 +76,103 @@ export class TransactionsRepository extends Repository<TransactionEntity> {
       validationResult.reason = BadTransactionReason.UNKNOWN_TRANSACTION_OWNER;
     }
     return validationResult;
+  }
+
+  async findAll(query: FindManyDto) {
+    const { take, skip, fromDate, toDate, withCount } = query;
+
+    const [transactions, count] = await Promise.all([
+      this.find({
+        take,
+        skip,
+        where: { createdAt: Between(fromDate, toDate) },
+        relations: {
+          sender: true,
+          recipient: true,
+        },
+      }),
+      ...(withCount
+        ? [this.count({ where: { createdAt: Between(fromDate, toDate) } })]
+        : []),
+    ]);
+    return {
+      records: transactions,
+      count,
+    };
+  }
+
+  /**
+   *
+   * @param ledgerId The ledger id to query transactions
+   * @param query close to FindManyOptions(custom, see '@app/common/common/dtos') to filter transactions
+   * @param debit the flag to get debit or credit transactions
+   *    (default = 'true' - means it returns debit transactions, 'false' = credit)
+   * @returns Object
+   *  ```
+   *  {
+   *      records: TransactionEntity[],
+   *      count: number,
+   *  }
+   * ```
+   */
+  async findAllByLedgerId(
+    ledgerId: number,
+    { withCount, ...query }: FindManyDto,
+    debit = true,
+  ) {
+    const ormQuery = this.getFindAllByLEdgerIdQuery(
+      ledgerId,
+      query,
+      false,
+      debit,
+    );
+    const ormCountQuery = this.getFindAllByLEdgerIdQuery(
+      ledgerId,
+      query,
+      true,
+      debit,
+    );
+    const [transactions, count] = await Promise.all([
+      this.find(ormQuery),
+      ...(withCount ? [this.count(ormCountQuery)] : []),
+    ]);
+    return {
+      records: transactions,
+      count,
+    };
+  }
+  private getFindAllByLEdgerIdQuery(
+    ledgerId: number,
+    query: Omit<FindManyDto, 'withCount'>,
+    withCount,
+    debit,
+  ) {
+    const { take, skip, fromDate, toDate } = query;
+    return {
+      ...(withCount
+        ? {}
+        : {
+            take,
+            skip,
+          }),
+      where: {
+        ...(debit
+          ? { recipient: { id: ledgerId } }
+          : { sender: { id: ledgerId } }),
+        createdAt: Between(fromDate, toDate),
+      },
+      select: {
+        id: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+        sender: { id: true },
+        recipient: { id: true },
+      },
+      relations: {
+        sender: true,
+        recipient: true,
+      },
+    };
   }
 }
